@@ -360,7 +360,11 @@ if(!avatarLocalPath){
     throw new ApiError(400, "Avatar file is missing")
 }
 
-let avatar=avatarLocalPath
+let avatar=await uploadOnCloudinary(avatarLocalPath)
+
+if(!avatar.url){
+    throw new ApiError(500, "Failed to upload avatar to cloudinary.")
+}
 
 let user=await User.findByIdAndUpdate(
     req.user?._id,
@@ -370,7 +374,7 @@ let user=await User.findByIdAndUpdate(
         }
     },
     {new: true}
-).select("-password")
+).select("-password").lean()
 
 return res.status(200).json(new ApiResponse(200, user, "Avatar updated successfully"))
 })
