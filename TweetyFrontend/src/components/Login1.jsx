@@ -108,7 +108,8 @@ let handleContinue = async (e) => {
          Speak your mind, follow what matters, and make every tweet count — with Tweety.</p>
       </div>
 
-      <div className='mt-4 text-gray-600 flex items-center justify-center gap-x-2 text-sm sm:text-base'>Already registered? Please login. <Link to="/login" className='text-blue-500 hover:underline hover:text-blue-600'>Click here</Link></div>
+      <div className='mt-4 text-gray-600 flex items-center justify-center gap-x-2 text-sm sm:text-base'>Already registered? Please login. <Link to="/login" className='text-blue-500 hover:underline hover:text-blue-600'>Click here</Link>
+      </div>
     </div>
   </div>
 </div>

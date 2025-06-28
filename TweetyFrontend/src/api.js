@@ -84,7 +84,7 @@ export const getCurrentUser = async () => {
     }
     throw error;
   }
-};
+}
 
 export let getUserPosts=async(userId)=>{
     try{

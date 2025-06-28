@@ -25,7 +25,7 @@ function ChangePassword() {
     let [isLoading, setIsLoading]=useState(false)
     let [showPassword, setShowPassword]=useState(false)
       
-     let passwordRegex=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+     let passwordRegex=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
 
     let handleChange=(e)=>{
         let {name, value}=e.target
