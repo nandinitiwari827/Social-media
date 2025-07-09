@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import logo from "../assets/tweetyLogo.png"
-import { logoutUser, searchUsers } from '../api.js'
+import { logoutUser, searchUsers, deleteAccount } from '../api.js'
 
 function Header() {
   const navigate = useNavigate()
@@ -10,6 +10,7 @@ function Header() {
   const [searchResults, setSearchResults] = useState([])
   const [showDropDown, setShowDropDown] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
+  let [deleteAccountClicked, setDeleteAccountClicked]=useState(false)
   const modalRef = useRef(null)
 
   const handleSignUp = () => {
@@ -27,6 +28,25 @@ function Header() {
     } catch (error) {
       console.error('Logout failed: ', error.message)
       alert('Failed to logout')
+    }
+  }
+
+   let handleDeleteAccount=async()=>{
+    try{
+      await deleteAccount(user._id)
+      localStorage.removeItem('user')
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('refreshToken')
+      localStorage.clear()
+
+      alert("Account deleted successfully !!!")
+      setUser(null)
+      setDeleteAccountClicked(false)
+      navigate("/")
+    }catch (error) {
+      console.error('Account deletion failed: ', error.message)
+      alert('Failed to delete account !')
+      setDeleteAccountClicked(false)
     }
   }
 
@@ -54,6 +74,7 @@ function Header() {
     const handleClickOutside = (event) => {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
         setShowDropDown(false)
+        setDeleteAccountClicked(false)
       }
     }
 
@@ -116,9 +137,30 @@ function Header() {
                     <Link to="/changeDetails" className='text-sm w-full text-left p-3 text-gray-500 hover:text-blue-500'>Change Account Details</Link>
                     <Link to="/changePassword" className='border-t border-gray-500 text-sm w-full text-left p-3 text-gray-500 hover:text-blue-500'>Change Password</Link>
                     <Link to="/account" className='border-t border-gray-500 text-sm w-full text-left p-3 text-gray-500 hover:text-blue-500'>Register</Link>
+                    <Link onClick={()=>setDeleteAccountClicked(true)} className='border-t border-gray-500 text-sm w-full text-left p-3 text-gray-500 hover:text-blue-500'>Delete Account</Link>
                     <Link onClick={handleLogout} className='border-t border-gray-500 text-sm w-full text-left p-3 text-gray-500 hover:text-blue-500'>Logout</Link>
                   </div>
                 </div>
+
+                     {deleteAccountClicked && (
+                  <div className='min-h-screen min-w-screen py-2 sm:py-4 md:py-6 lg:py-8 bg-black/60 backdrop-blur-sm fixed left-0 top-0 flex justify-center items-center z-50'>
+                    <div ref={modalRef} className='bg-white rounded-lg flex flex-col p-4'>
+                      <p className='text-lg w-[280px]'>Are you sure you want to delete your account?</p>
+                      <div className='flex w-full justify-evenly mt-6 font-semibold'>
+                        <button
+                          onClick={handleDeleteAccount}
+                          className='bg-red-500 hover:bg-red-400 text-white px-5 py-2 rounded-md cursor-pointer'>
+                          Yes
+                        </button>
+                        <button
+                          onClick={() => setDeleteAccountClicked(false)}
+                          className='bg-green-500 hover:bg-green-400 text-white px-5 py-2 rounded-md cursor-pointer'>
+                          No
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <button onClick={handleSignUp} className='cursor-pointer gap-x-1 rounded-lg flex text-gray-500 font-bold text-sm duration-200 hover:text-white hover:bg-blue-500 items-center px-2 h-[40px] mt-1'>
@@ -253,6 +295,9 @@ function Header() {
                   >
                     Register
                   </Link>
+                   <Link onClick={()=>setDeleteAccountClicked(true)} className='text-sm text-gray-500 hover:text-blue-500 border-t-1 border-gray-300'>
+                   Delete Account
+                   </Link>
                   <Link 
                     onClick={() => {
                       handleLogout()
@@ -263,6 +308,19 @@ function Header() {
                     Logout
                   </Link>
                 </div>
+
+                  {deleteAccountClicked && (
+                  <div className='w-full h-full py-2 sm:py-4 md:py-6 lg:py-8 bg-black/60 backdrop-blur-sm fixed left-0 top-0 flex justify-center items-center z-50'>
+                    <div className='bg-white rounded-lg flex flex-col p-4'>
+                     <p className='text-lg w-[280px]'>Are you sure you want to delete your account?</p>
+                     
+                     <div className='flex w-full justify-evenly mt-6 font-semibold'>
+                      <button onClick={handleDeleteAccount} className='bg-red-500 hover:bg-red-400 text-white px-5 py-2 rounded-md cursor-pointer'>Yes</button>
+                      <button onClick={()=>setDeleteAccountClicked(false)} className='bg-green-500 hover:bg-green-400 text-white px-5 py-2 rounded-md cursor-pointer'>No</button>
+                     </div>
+                    </div>
+                  </div>
+                )}
               </>
             ) : (
               <button 

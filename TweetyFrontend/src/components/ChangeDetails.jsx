@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import UserContext from '../contexts/userContext'
 import { useNavigate } from 'react-router-dom'
 import logo from "../assets/tweetyLogo.png"
@@ -97,6 +97,14 @@ function ChangeDetails() {
         firstName: '',
         lastName: '',
         username: '',
+        birthdate: '',
+    })
+     }else if(status===409){
+       setErrors({
+        email: '',
+        firstName: '',
+        lastName: '',
+        username: 'Username is already taken.',
         birthdate: '',
     })
      }
@@ -205,12 +213,12 @@ function ChangeDetails() {
     className={`absolute left-4 sm:left-5 top-1 text-gray-500 text-xs sm:text-xs`}>
     Birthdate
   </label>
-   {errors.birthdate && (<p className='text-xs sm:text-[13px] text-red-600 relative top-3 sm:top-2'>Birthdate should be</p>)}
+   {errors.birthdate && (<p className='text-xs sm:text-[13px] text-red-600 relative top-3 sm:top-2'>{errors.birthdate}</p>)}
    {(formData.birthdate && new Date && new Date(formData.birthdate) >= new Date()) && (<p className='text-xs sm:text-[13px] text-red-600 relative top-3 sm:top-2'>Birthdate should be in past.</p>)}
 </div>
             </div>
 
-            <p className='text-sm font-bold'>Communications</p>
+            <p className='text-sm font-bold'>Communications & privacy</p>
     
     <button 
     onClick={handleSubmit}

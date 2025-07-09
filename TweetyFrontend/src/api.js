@@ -482,3 +482,28 @@ export let searchUsers=async(query)=>{
     throw error
   }
 }
+
+export let deleteAccount=async(userId)=>{
+      try{
+         let accessToken = localStorage.getItem("accessToken");
+        
+         let response=await axios.delete(`${API_BASE_URL}/users/delete-account/${userId}`, {
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Content-Type": "application/json",
+            },
+            withCredentials: true
+        })
+     if (response.status === 200) {
+            return response.data
+        } else {
+            throw new Error(`Account deletion failed with status: ${response.status}`);
+        }
+    }catch(error){
+      console.error('Account deletion failed:', {
+            message: error.response?.data?.message || error.message,
+            status: error.response?.status,
+        })
+    throw error
+    }
+}
