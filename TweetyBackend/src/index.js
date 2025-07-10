@@ -11,5 +11,5 @@ connectDB().then(()=>{
         console.log(`Server running at port: ${process.env.PORT}`)
     })
 }).catch((err)=>{
-    connection.log("connection failed !!!", err)
+    console.log("connection failed !!!", err)
 })
