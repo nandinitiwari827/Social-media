@@ -1,6 +1,6 @@
 import axios from "axios"
 
-let API_BASE_URL = "http://localhost:1256/api/v1"
+let API_BASE_URL = "https://social-media-2-gmxy.onrender.com/api/v1"
 
 export let registerUser=async(formData)=>{
     try{
